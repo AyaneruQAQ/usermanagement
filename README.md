@@ -7,7 +7,7 @@
 | 层 | 技术 |
 |---|------|
 | 全栈框架 | Next.js 15 (App Router) |
-| UI 组件 | Ant Design 5.x |
+| UI 组件 | Ant Design 6.x |
 | 后端 | Next.js API Routes |
 | 数据库 | Supabase (PostgreSQL) |
 | 认证 | Supabase Auth |
