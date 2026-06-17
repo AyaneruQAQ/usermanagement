@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, InputNumber, DatePicker, Switch } from 'antd';
 import type { User, Subscription } from '@/types';
+import styles from './EditSubscriptionModal.module.css';
 import dayjs from 'dayjs';
 
 interface Props {
@@ -54,20 +55,20 @@ export default function EditSubscriptionModal({ open, user, onOk, onCancel, load
       confirmLoading={loading}
       destroyOnHidden
     >
-      <Form form={form} layout="vertical" style={{ marginTop: 16 }}>
+      <Form form={form} layout="vertical" className={styles.form}>
         <Form.Item
           name="duration"
           label="订阅时长（月）"
           rules={[{ required: true, message: '请输入订阅时长' }]}
         >
-          <InputNumber min={0} style={{ width: '100%' }} placeholder="请输入月数" />
+          <InputNumber min={0} className={styles.fullWidth} placeholder="请输入月数" />
         </Form.Item>
         <Form.Item
           name="expireDate"
           label="到期时间"
           rules={[{ required: true, message: '请选择到期时间' }]}
         >
-          <DatePicker style={{ width: '100%' }} />
+          <DatePicker className={styles.fullWidth} />
         </Form.Item>
         <Form.Item name="isContinuous" label="是否连续包月" valuePropName="checked">
           <Switch />

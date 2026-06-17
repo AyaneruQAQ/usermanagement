@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
-import { Typography, Input, Button, Space, message } from 'antd';
+import { Input, Button, Space, message } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import styles from './page.module.css';
 import { getUsers, updateSubscription } from '@/services/userService';
+import UserHeader from '@/components/UserHeader';
 import UserTable from '@/components/UserTable';
 import EditSubscriptionModal from '@/components/EditSubscriptionModal';
 import type { User } from '@/types';
@@ -68,16 +70,17 @@ export default function HomePage() {
   };
 
   return (
-    <div style={{ maxWidth: 960, margin: '0 auto', padding: 24 }}>
-      <Typography.Title level={3}>用户订阅管理</Typography.Title>
+    <div>
+      <UserHeader />
+      <div className={styles.container}>
 
-      <Space style={{ marginBottom: 16 }}>
+      <Space className={styles.searchBar}>
         <Input
           placeholder="姓名"
           value={nameFilter}
           onChange={(e) => setNameFilter(e.target.value)}
           onPressEnter={handleSearch}
-          style={{ width: 160 }}
+          className={styles.searchInput}
           prefix={<SearchOutlined />}
           allowClear
         />
@@ -86,7 +89,7 @@ export default function HomePage() {
           value={phoneFilter}
           onChange={(e) => setPhoneFilter(e.target.value)}
           onPressEnter={handleSearch}
-          style={{ width: 160 }}
+          className={styles.searchInput}
           prefix={<SearchOutlined />}
           allowClear
         />
@@ -96,13 +99,14 @@ export default function HomePage() {
       </Space>
 
       <UserTable users={users} loading={loading} onEdit={handleEdit} />
-      <EditSubscriptionModal
-        open={modalOpen}
-        user={editingUser}
-        onOk={handleSave}
-        onCancel={handleCancel}
-        loading={saving}
-      />
+        <EditSubscriptionModal
+          open={modalOpen}
+          user={editingUser}
+          onOk={handleSave}
+          onCancel={handleCancel}
+          loading={saving}
+        />
+      </div>
     </div>
   );
 }

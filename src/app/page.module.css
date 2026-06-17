@@ -1,0 +1,13 @@
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.searchBar {
+  margin-bottom: 16px;
+}
+
+.searchInput {
+  width: 160px;
+}

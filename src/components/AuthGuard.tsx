@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Spin } from 'antd';
+import styles from './AuthGuard.module.css';
 import { getCurrentUser } from '@/services/authService';
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -32,7 +33,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (checking) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div className={styles.loading}>
         <Spin size="large" />
       </div>
     );

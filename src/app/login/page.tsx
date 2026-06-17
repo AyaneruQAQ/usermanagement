@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import styles from './page.module.css';
 import { login, getCurrentUser } from '@/services/authService';
 
 export default function LoginPage() {
@@ -31,16 +32,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        background: '#f5f5f5',
-      }}
-    >
-      <Card title="用户登录" style={{ width: 400 }}>
+    <div className={styles.wrapper}>
+      <Card title="用户登录" className={styles.card}>
         <Form onFinish={handleLogin} size="large">
           <Form.Item
             name="phone"
