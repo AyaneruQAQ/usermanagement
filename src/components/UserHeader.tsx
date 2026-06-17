@@ -1,21 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Space, Typography, Button } from 'antd';
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import styles from './UserHeader.module.css';
-import { getCurrentUser, logout } from '@/services/authService';
+import { useUser } from '@/lib/UserContext';
+import { logout } from '@/services/authService';
 
 export default function UserHeader() {
   const router = useRouter();
-  const [name, setName] = useState('');
-
-  useEffect(() => {
-    getCurrentUser()
-      .then((res) => setName(res.data.name))
-      .catch(() => {});
-  }, []);
+  const { user } = useUser();
 
   const handleLogout = async () => {
     try {
@@ -34,7 +29,7 @@ export default function UserHeader() {
 
       <Space>
         <UserOutlined />
-        <Typography.Text>{name || '--'}</Typography.Text>
+        <Typography.Text>{user?.name || '--'}</Typography.Text>
         <Button
           type="link"
           icon={<LogoutOutlined />}

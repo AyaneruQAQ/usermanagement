@@ -1,37 +1,27 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Spin } from 'antd';
 import styles from './AuthGuard.module.css';
-import { getCurrentUser } from '@/services/authService';
+import { useUser } from '@/lib/UserContext';
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [checking, setChecking] = useState(true);
+  const { user, loading } = useUser();
 
-  useEffect(() => {
-    // 登录页不需要鉴权
-    if (pathname === '/login') {
-      setChecking(false);
-      return;
+  React.useEffect(() => {
+    if (!loading && !user && pathname !== '/login') {
+      router.push('/login');
     }
-
-    getCurrentUser()
-      .then(() => {
-        setChecking(false);
-      })
-      .catch(() => {
-        router.push('/login');
-      });
-  }, [pathname, router]);
+  }, [loading, user, pathname, router]);
 
   if (pathname === '/login') {
     return <>{children}</>;
   }
 
-  if (checking) {
+  if (loading) {
     return (
       <div className={styles.loading}>
         <Spin size="large" />

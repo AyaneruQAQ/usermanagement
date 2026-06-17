@@ -1,33 +1,36 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import styles from './page.module.css';
-import { login, getCurrentUser } from '@/services/authService';
+import { useUser } from '@/lib/UserContext';
+import { login } from '@/services/authService';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const { user, loading, refresh } = useUser();
 
   // 已登录则跳转首页
-  React.useEffect(() => {
-    getCurrentUser()
-      .then(() => router.push('/'))
-      .catch(() => {});
-  }, [router]);
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/');
+    }
+  }, [loading, user, router]);
 
   const handleLogin = async (values: { phone: string; password: string }) => {
-    setLoading(true);
+    setSubmitting(true);
     try {
       await login(values.phone, values.password);
       message.success('登录成功');
+      await refresh(); // 刷新 Context 中的用户信息
       router.push('/');
     } catch {
       // 错误已在 request 拦截器中统一提示
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
@@ -54,7 +57,7 @@ export default function LoginPage() {
             <Input.Password prefix={<LockOutlined />} placeholder="密码" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block>
+            <Button type="primary" htmlType="submit" loading={submitting} block>
               登录
             </Button>
           </Form.Item>
